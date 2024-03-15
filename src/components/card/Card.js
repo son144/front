@@ -216,6 +216,7 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
           }
         </div>
       }
+      <div></div>
       <div className={styles.statuscont}>
         {
           (task?.dueDate && (formattedDate!=="Invalid date"))&&

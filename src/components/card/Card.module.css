@@ -55,10 +55,10 @@
 .statuscont{
     margin-top: 1rem;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
      gap: 0.5rem;
-    /* justify-content: space-between; */
-    /* align-items: center; */
+    justify-content: space-between;
+    align-items: center;
 }
 .statusinner{
     display: flex;
@@ -66,13 +66,13 @@
     /* justify-content: space-between; */
     align-items: center;
     gap: 10px;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
 }
 .status{
     font-size: 10px;
     background-color: #dbdbdb;
     padding: 5px 8px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
 
 }
@@ -83,6 +83,7 @@
     padding: 5px 10px;
     border-radius: 8px;
     color: white;
+
 }
 .task{
     font-size: 14px;

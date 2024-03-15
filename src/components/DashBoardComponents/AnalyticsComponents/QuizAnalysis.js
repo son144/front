@@ -85,7 +85,7 @@ const QuizAnalysis = () => {
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
-                Hign Priority
+                High Priority
               </div>
               <div>{todoData.filter((todo) => todo?.priority === "HIGH PRIORITY").length?todoData.filter((todo) => todo?.priority === "HIGH PRIORITY").length:0}</div>
             </div>

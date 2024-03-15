@@ -8,11 +8,9 @@ const QuizAnalysis = () => {
   const [dueData, setDueData] = useState(0)
   const token = localStorage.getItem('accessToken');
 
-
   useEffect(() => {
     const getCurrentUserTasks = async () => {
       try {
-     
         const response = await axios.get(`${process.env.React_APP_BACKEND_URL}/api/v1/users/current-user-task-todo`,
         {
           headers: {
@@ -29,7 +27,7 @@ const QuizAnalysis = () => {
         });
         setDueData(due.length)
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     };
     getCurrentUserTasks();
@@ -40,7 +38,6 @@ const QuizAnalysis = () => {
       <div className={styles.title}>Analytics</div>
       <div className={styles.tasks}>
         <div className={styles.card}>
-          {/* {todoData && todoData.length > 0  && */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -48,8 +45,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.complete === "BACKLOG").length?todoData.filter((todo) => todo?.complete === "BACKLOG").length:0}</div>
             </div>
-          {/* } */}
-          {/* {todoData && todoData.length > 0 &&  */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -57,8 +52,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.complete === "TO-DO").length?todoData.filter((todo) => todo?.complete === "TO-DO").length:0}</div>
             </div>
-          {/* } */}
-          {/* {todoData && todoData.length > 0 && */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -66,8 +59,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.complete === "PROGRESS").length?todoData.filter((todo) => todo?.complete === "PROGRESS").length:0}</div>
             </div>
-          {/* } */}
-          {/* {todoData && todoData.length > 0 && todoData.filter((todo) => todo?.complete === "DONE").length > 0 && */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -75,10 +66,8 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.complete === "DONE").length}</div>
             </div>
-          {/* } */}
         </div>
         <div className={styles.card}>
-          {/* {todoData && todoData.length > 0 &&  */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -86,8 +75,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.priority === "LOW PRIORITY").length?todoData.filter((todo) => todo?.priority === "LOW PRIORITY").length:0}</div>
             </div>
-          {/* } */}
-          {/* {todoData && todoData.length > 0 && */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -95,8 +82,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.priority === "MODERATE PRIORITY").length?todoData.filter((todo) => todo?.priority === "MODERATE PRIORITY").length:0}</div>
             </div>
-          {/* } */}
-          {/* {todoData && todoData.length > 0 &&  */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -104,8 +89,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{todoData.filter((todo) => todo?.priority === "HIGH PRIORITY").length?todoData.filter((todo) => todo?.priority === "HIGH PRIORITY").length:0}</div>
             </div>
-          {/* } */}
-          {/* {dueData && */}
             <div className={styles.task}>
               <div className={styles.priority}>
                 <div className={styles.dot} style={{ backgroundColor: '#90C4CC' }}></div>
@@ -113,7 +96,6 @@ const QuizAnalysis = () => {
               </div>
               <div>{dueData?dueData:0}</div>
             </div>
-          {/* } */}
         </div>
       </div>
     </div>

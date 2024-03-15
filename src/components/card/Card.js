@@ -26,47 +26,34 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
   const url = process.env.REACT_APP_API_URL
   const token = localStorage.getItem('accessToken');
 
-  // console.log("hii");
-  // console.log(url,"url");
-  // console.log(task,"task");
-  // console.log("data",data);
-  // console.log("title",data?.title);
-  // console.log(updateTodoData);
-  // console.log("formattedDate",formattedDate);
-  // console.log("dueDate:", dueDate.format('DD-MM-YYYY'));
-  // console.log("currentDate:", currentDate.format('DD-MM-YYYY'));
-  // Compare dueDate with currentDate
-  // console.log("isPastDue", isPastDue);
+  console.log("formattedDate",formattedDate);
+ 
 
   const toggleSubTodo = async (index, id) => {
-    // console.log("inside toggle",index,id);
     const updatedSubTodos = [...task.subTodos];
     updatedSubTodos[index].isCheck = !updatedSubTodos[index].isCheck;
     setTask({ ...data, subTodos: updatedSubTodos });
     try {
       const res = await axios.put(`${process.env.React_APP_BACKEND_URL}/api/v1/users//update-subTodo/${id}`, { subTodos: updatedSubTodos },
-      {
-        headers: {
+        {
+          headers: {
             Authorization: `Bearer ${token}`
+          }
         }
-    }
       )
-      // console.log(res,"res");
     } catch (error) {
       toast.error("Something went wrong!")
-      // console.log("catch");
     }
   };
 
   const changeTaskStatus = async (id, status) => {
-    // console.log("id fromchange", id, status);
     try {
       const res = await axios.put(`${process.env.React_APP_BACKEND_URL}/api/v1/users/${id}`, { status: status },
-      {
-        headers: {
+        {
+          headers: {
             Authorization: `Bearer ${token}`
+          }
         }
-    }
       );
       console.log(res, "rees");
       data.complete = status
@@ -78,34 +65,28 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
   }
 
   const editTaskHandler = async (id, obj) => {
-    console.log(id,"from card");
-    console.log(obj,"---- from card");
+    // console.log(id,"from card");
+    // console.log(obj,"---- from card");
     try {
       const res = await axios.put(`${process.env.React_APP_BACKEND_URL}/api/v1/users/current-user/${id}`, obj,
-      {
-        headers: {
+        {
+          headers: {
             Authorization: `Bearer ${token}`
+          }
         }
-    }
       );
       const data = res?.data?.data
-      // console.log(data,"data edited");
-      // console.log(res, "res from card");
-      console.log({...obj},"------");
+      console.log({ ...obj }, "------");
       toast.success(`Task update successfully`);
-      setTask({...data})
-      // await editTodoData(id, data)
+      setTask({ ...data })
     } catch (err) {
-      toast.error(`${err.response.data.message}`)
+      toast.error(`${err?.response?.data?.message}`)
     }
   }
 
   const onShareHandler = async (id) => {
-    console.log("inside on share", id);
-
+    // console.log("inside on share", id);
     const url = process.env.REACT_APP_API_URL + "/shared-task/" + id;
-    console.log(url, "url");
-
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Link Copied ");
@@ -115,26 +96,6 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
     }
   };
 
-
-  // const onShareHandler=async(id)=>{
-  //   console.log("inside on share",id);
-
-  //   const url=process.env.REACT_APP_API_URL+"/shared-task/"+id
-  //   console.log("hii");
-  //   console.log(url,"url");
-  //   // const link=/shared-task/65dfeb04efb8d5f7b6dfae44
-  //   // try {
-  //   //   console.log("try");
-  //   //   const response = await axios.post(`/api/v1/users/current-user-share-task/${id}`);
-  //   //   console.log(response);
-  //   //   toast.success("cpopied successfully")
-  //   // } catch (error) {
-  //   //   const err=error.response.data.message
-  //   //   toast.error(`${err}`)
-  //   //   console.error(error.response,"dfdsg");
-  //   // }
-  // }
-  // console.log(changedStatus);
   return (
     <div className={styles.maincard}>
       <div className={styles.options}>
@@ -203,7 +164,6 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
                         }}
                         className={styles.customStyle}
                       >
-                        {/* {active ? "active" : "notActive"} */}
                         Share
                       </button>
                     )}
@@ -214,7 +174,6 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
                     {({ active }) => (
                       <button
                         onClick={async () => {
-                          // deleteTask(data?._id)
                           setIsDelete(true)
                           setNewData(data)
                         }}
@@ -225,7 +184,6 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
                         className={styles.customStyle}
 
                       >
-                        {/* {active ? "active" : "notActive"} */}
                         Delete
                       </button>
                     )}
@@ -238,7 +196,6 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
       </div>
       <h1 className={styles.title}>{task?.title}  </h1>
       <div className={styles.arrowcont}>
-        {/* <p className={styles.checklist}>Checklist (1/3)</p> */}
         <p className={styles.checklist}>{checklistText}</p>
         <div onClick={() => setIsView((prev) => !prev)}
           className={styles.dropdownIcon}
@@ -261,7 +218,7 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
       }
       <div className={styles.statuscont}>
         {
-          task?.dueDate &&
+          (task?.dueDate && (formattedDate!=="Invalid date"))&&
           <p className={styles.due} style={{
             backgroundColor: task.complete === "DONE" ? "#63C05B" : (isPastDue ? "#CF3636" : "#5A5A5A")
           }}>

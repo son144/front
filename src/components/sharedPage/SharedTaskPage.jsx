@@ -4,6 +4,7 @@ import styles from "./SharedTaskPage.module.css"
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { FaDiceD6 } from "react-icons/fa";
+import box from "../../images/codesandbox.svg"
 
 
 
@@ -53,7 +54,7 @@ const checklistText = `Checklist (${completedSubtasks}/${totalSubtasks})`;
   
        <div className={styles.outerPro}>  <h3
             className={styles.proClass}>
-            <div><FaDiceD6 className={styles.text} /></div>
+            <div><img src={box}/></div>
             Pro Manage</h3></div>
       <div className={styles.maincard}>
         <div className={styles.options}>

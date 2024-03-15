@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { DateCalendar } from '@mui/x-date-pickers';
 import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import dayjs from 'dayjs';
 import styles from "./EditModal.module.css"
 
-const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
+const EditModal = ({ data, setIsEditModalOpen, editTaskHandler }) => {
   const { auth } = useAuth();
   const date = moment(data?.dueDate, 'DD-MM-YYYY').format('DD/MM/YYYY');
   const [title, setTitle] = useState(data?.title)
@@ -24,38 +18,23 @@ const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
   const [tasks, setTasks] = useState(data?.subTodos)
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(date || dayjs());
-  const [isCalendar,setIsCalendar]=useState(false)
-  // const [selectedDate, setSelectedDate] = useState(date);
-  // const [subTodo,setSubTodo]=useState(data?.subTodos)
-  console.log(data,"data");
-  console.log("date",selectedDate);
-  // console.log("from edit",data);
-  // console.log(auth);
-  
-  // const handleDateSelect = (date) => {
-    //   // console.log("date from date", date);
-  //   const formattedDate = dayjs(date).format('DD-MM-YYYY');
-  //   const formattedDate2 = moment(date.$d).format('DD/MM/YYYY');
-  //   setSelectedDate(formattedDate);
-  //   setDueDate(formattedDate2);
-  //   // console.log("formattedDate", formattedDate);
-  //   // console.log("formattedDate2", formattedDate2);
-  //   setShowCalendar(false);
-  // };
-  
-  const onEditHandler=async(id)=>{
-      console.log("id from edit modal",id);
-      const obj={
-            title: title,
-        priority: priority,
-        subTodos: tasks,
-        dueDate: selectedDate,
-        complete: isCompleted,
-  
-      }
-      setIsEditModalOpen(false)
-      console.log(obj,"obj");
-    await  editTaskHandler(id,obj)
+  const [isCalendar, setIsCalendar] = useState(false)
+  // console.log(data,"data");
+  // console.log("date",selectedDate);
+
+  const onEditHandler = async (id) => {
+    console.log("id from edit modal", id);
+    const obj = {
+      title: title,
+      priority: priority,
+      subTodos: tasks,
+      dueDate: selectedDate,
+      complete: isCompleted,
+
+    }
+    setIsEditModalOpen(false)
+    console.log(obj, "obj");
+    await editTaskHandler(id, obj)
   }
 
   const addTsksHandler = () => {
@@ -82,7 +61,6 @@ const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
     setCompletedTasksCount(count);
   };
 
- 
   return (
     <div className={styles.overlay}>
       <div className={styles.innerOverlay}>
@@ -97,19 +75,19 @@ const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
           <div className={styles.priortiyDiv}>
             <div className={styles.heading}>Select Priority <span style={{ color: "red" }}>*</span></div>
             <div className={styles.customContainer}>
-              <div onClick={() => setPriority("HIGH PRIORITY")} className={styles.choose} style={{backgroundColor:priority==="HIGH PRIORITY"&&"#EEECEC"}}>
+              <div onClick={() => setPriority("HIGH PRIORITY")} className={styles.choose} style={{ backgroundColor: priority === "HIGH PRIORITY" && "#EEECEC" }}>
                 <div className={styles.dot} style={{ backgroundColor: "red" }}></div>
                 <p className={styles.textPriority} >
                   HIGH PRIORITY
                 </p>
               </div>
-              <div onClick={() => setPriority("MODERATE PRIORITY")} className={styles.choose} style={{backgroundColor:priority==="MODERATE PRIORITY"&&"#EEECEC"}}>
+              <div onClick={() => setPriority("MODERATE PRIORITY")} className={styles.choose} style={{ backgroundColor: priority === "MODERATE PRIORITY" && "#EEECEC" }}>
                 <div className={styles.dot} style={{ backgroundColor: "#17A2B8" }}></div>
                 <p className={styles.textPriority}>
                   MODERATE PRIORITY
                 </p>
               </div>
-              <div onClick={() => setPriority("LOW PRIORITY")} className={styles.choose} style={{backgroundColor:priority==="LOW PRIORITY"&&"#EEECEC"}}>
+              <div onClick={() => setPriority("LOW PRIORITY")} className={styles.choose} style={{ backgroundColor: priority === "LOW PRIORITY" && "#EEECEC" }}>
                 <div className={styles.dot} style={{ backgroundColor: "#63C05B" }}></div>
                 <p className={styles.textPriority}>
                   LOW PRIORITY
@@ -118,71 +96,48 @@ const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
             </div>
           </div>
           <div className={styles.heading}>Checklist ({completedTasksCount}/{tasks.length}) <span style={{ color: "red" }}>*</span></div>
-       <div className={styles.subTodosContainer}>
-       <div className={styles.outer}>
-            {tasks && tasks.length > 0 && tasks.map((task, index) => (
-              <div key={index} className={styles.inner}>
-                <div className={styles.inputcustom}>
-                  <input
-                    type="checkbox"
-                    style={{ width: "fit-content" }}
-                    checked={task.isCheck}
-                    onChange={(e) => onCheckHandler(index, e.target.checked)}
-                  />
-                  <input className={styles.taskinput}
-                    placeholder="Add a task"
-                    value={task.text}
-                    onChange={(e) => onTextChangeHandler(index, e.target.value)}
-                  />
+          <div className={styles.subTodosContainer}>
+            <div className={styles.outer}>
+              {tasks && tasks.length > 0 && tasks.map((task, index) => (
+                <div key={index} className={styles.inner}>
+                  <div className={styles.inputcustom}>
+                    <input
+                      type="checkbox"
+                      style={{ width: "fit-content" }}
+                      checked={task.isCheck}
+                      onChange={(e) => onCheckHandler(index, e.target.checked)}
+                    />
+                    <input className={styles.taskinput}
+                      placeholder="Add a task"
+                      value={task.text}
+                      onChange={(e) => onTextChangeHandler(index, e.target.value)}
+                    />
+                  </div>
+                  <div className={styles.deleteDiv} onClick={() => onDeleteHandler(index)}>
+                    <MdDeleteOutline style={{ color: 'red', fontSize: '1.25rem' }} />
+                  </div>
                 </div>
-                <div className={styles.deleteDiv} onClick={() => onDeleteHandler(index)}>
-                  <MdDeleteOutline style={{ color: 'red', fontSize: '1.25rem' }} />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-       </div>
           <div className={styles.newCalendar}>
-
-          <button onClick={addTsksHandler} className={styles.custom}><span><FaPlus /></span>Add Task</button>
-          {/* <button onClick={() => setIsCalendar((prev)=>!prev)} className={styles.duebtn}>Change due date</button> */}
-          {/* {
-       isCalendar&&
-        <div >vghh</div>
-      } */}
+            <button onClick={addTsksHandler} className={styles.custom}><span><FaPlus /></span>Add Task</button>
           </div>
           <div className={styles.customflex}>
-            {/* {
-              dueDate ? */}
-                {/* <div onClick={() => setShowCalendar(true)} className={styles.duebtn}>{dueDate}</div> */}
-                {/* : */}
-                {
-                  (selectedDate!=="Invalid date")?
+            {
+              (selectedDate !== "Invalid date") ?
                 <button onClick={() => setShowCalendar(true)} className={styles.duebtn}>{selectedDate}</button>
-:
-<div></div>
-                }
-
-            {/* } */}
+                :
+                <div></div>
+            }
             <div className={styles.btn}>
               <button onClick={() => { setIsEditModalOpen(false) }}
                 className={styles.customBtn}>Cancel</button>
               <button onClick={async () => await onEditHandler(data?._id)} className={styles.saveBtn}>Edit</button>
-
             </div>
           </div>
         </div>
       </div>
-    {/* {
-      isCalendar&&
-      <div className={styles.fixedCenter}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar value={selectedDate}
-          onChange={handleDateSelect} />
-      </LocalizationProvider>
-    </div>
-    } */}
-      
     </div>
   );
 };

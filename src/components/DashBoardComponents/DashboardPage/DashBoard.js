@@ -26,8 +26,6 @@ const DashBoard = () => {
   const token = localStorage.getItem('accessToken');
 
   const deleteTask = async (id) => {
-    console.log("inside delete");
-    console.log("id from delete", id);
     try {
       const res = await axios.delete(`${process.env.React_APP_BACKEND_URL}/api/v1/users/${id}`,
       {
@@ -36,7 +34,7 @@ const DashBoard = () => {
         }
     }
       );
-      console.log("res",res);
+      // console.log("res",res);
       setTodoData(todoData.filter((task) => task._id !== id));
       toast.success("Deleted successfully.")
       setIsDeleted(true)
@@ -95,15 +93,11 @@ const DashBoard = () => {
    
   }
 
-
-
   useEffect(() => {
     console.log("Inside sorted use effect");
     const onSortHandler = async () => {
-      // console.log(sortBy.name, "sort");
       const by = sortBy.name
       try {
-        // console.log("inside trry");
         const response = await axios.get(`${process.env.React_APP_BACKEND_URL}/api/v1/users/current-user-week/${by}`,
         {
           headers: {
@@ -124,7 +118,6 @@ const DashBoard = () => {
   useEffect(() => {
     const getCurrentUserTasks = async () => {
       console.log(token,'token');
-      // ${process.env.React_APP_BACKEND_URL}
       try {
         const response = await axios.get(`${process.env.React_APP_BACKEND_URL}/api/v1/users/current-user-task-todo`, {
           headers: {
@@ -143,12 +136,6 @@ const DashBoard = () => {
     console.log("inside effect");
   }, []);
 
-
-
-
-  // console.log(todoData, "todo data");
-  // console.log("todo",todo);
-  // console.log(sortBy,"sortby");
 
   return (
     <div className={styles.body}>
@@ -170,11 +157,9 @@ const DashBoard = () => {
                           style={{ backgroundColor: active && "#EEF2F5" }}
                           className={styles.singleOption}
                         >
-                          {/* {selected && <CheckIcon />} */}
                           <span>
                             {category.name}
                           </span>
-                          {/* {selected && <span>check</span>} */}
                         </li>
                       )}
                     </Listbox.Option>
@@ -183,7 +168,6 @@ const DashBoard = () => {
               </div>
             </Listbox>
           </div>
-
         </div>
       </div>
       <div className={styles.boardoutercont}>
@@ -211,7 +195,6 @@ const DashBoard = () => {
               <div><RiFileCopy2Line /></div>
             </div>
           </div>
-
           <div className={styles.cardContainer}>
             {todoData && todoData?.length > 0 && todoData.filter((todo) => todo?.complete === "TO-DO").map((todo, idx) => {
               return <div key={todo?._id}>
@@ -251,9 +234,7 @@ const DashBoard = () => {
           </div>
         </div>
      </div>
-
       </div>
-
       {addCard && <AddQuestionModal setAddCard={setAddCard} onSaveHandler={onSaveHandler} />}
     </div>
   )

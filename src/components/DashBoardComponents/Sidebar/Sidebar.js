@@ -11,23 +11,29 @@ import { MdOutlineAnalytics } from "react-icons/md";
 import { FaDiceD6 } from "react-icons/fa";
 import Cookies from 'js-cookie'
 import box from "../../../images/codesandbox.svg"
+import Modal from '../../Modal/modal'
+import { CircularProgress } from "@mui/material";
 
 
 const Sidebar = () => {
   const { auth } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate()
   console.log(auth?.data?._id);
 
   const logoutHandler = async () => {
     console.log("insile logout handler");
     const token = localStorage.getItem('accessToken');
-    console.log(token,'token');
+    console.log(token, 'token');
+    setIsModalOpen(true)
+
     try {
-      const response = await axios.post(`${process.env.React_APP_BACKEND_URL}/api/v1/users/logout`,{name:"sonal"}, {
+      const response = await axios.post(`${process.env.React_APP_BACKEND_URL}/api/v1/users/logout`, { name: "sonal" }, {
         headers: {
-            Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
-    })
+      })
       console.log("from logout hadnler", response);
       localStorage.removeItem("@auth");
       localStorage.removeItem("accessToken");
@@ -35,10 +41,14 @@ const Sidebar = () => {
       Cookies.remove('refreshToken')
 
       navigate("/")
+      setIsModalOpen(false)
+
       toast.success("Logged out successfully.")
     } catch (error) {
       const err = error?.response?.data?.message
       toast.error(`${err}`)
+      setIsModalOpen(false)
+
     }
   }
   return (
@@ -47,10 +57,9 @@ const Sidebar = () => {
         <NavLink to={"/#"}>
           <h3
             className={styles.proClass}>
-            <div><img src={box}/> </div>
+            <div><img src={box} /> </div>
 
-            {/* <div><FaDiceD6 className={styles.text} /></div> */}
-            Pro Manage</h3>
+            <h5 className={styles.linkText}>Pro Manage</h5></h3>
         </NavLink>
         <NavLink to={"/dashboard"}>
           <h3
@@ -60,8 +69,8 @@ const Sidebar = () => {
               color: window.location.pathname === "/dashboard" && "black", fontWeight: window.location.pathname === "/dashboard" && "500"
             }}
           >
-            <div><MdOutlineSpaceDashboard className={styles.text} /></div>
-            Board</h3>
+            <div className={styles.icons}><MdOutlineSpaceDashboard className={styles.text} /></div>
+           <h5 className={styles.linkText}>Board</h5></h3>
         </NavLink>
         <NavLink to={"/analytics"}>
           <h3
@@ -71,8 +80,8 @@ const Sidebar = () => {
               color: window.location.pathname === "/analytics" && "black", fontWeight: window.location.pathname === "/analytics" && "500"
             }}
           >
-            <div><MdOutlineAnalytics className={styles.text} /></div>
-            Analytics</h3>
+            <div className={styles.icons}><MdOutlineAnalytics className={styles.text} /></div>
+            <h5 className={styles.linkText}>Analytics</h5></h3>
         </NavLink>
         <NavLink to={"/settings"}>
           <h3
@@ -82,19 +91,27 @@ const Sidebar = () => {
               color: window.location.pathname === "/settings" && "black", fontWeight: window.location.pathname === "/settings" && "500"
             }}
           >
-            <div>
+            <div className={styles.icons}>
               <IoSettingsOutline className={styles.text} />
             </div>
-            Settings</h3>
+           <h5 className={styles.linkText}> Settings</h5></h3>
         </NavLink>
       </div>
       <div>
         <button
           onClick={async () => await logoutHandler()}
           className={styles.logout}>
-          <div><RiLogoutBoxRLine className={styles.text} /></div>
-          Logout</button>
+          <div className={styles.icons}><RiLogoutBoxRLine className={styles.text} /></div>
+          <p className={styles.linkText}>Logout</p></button>
       </div>
+      <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
+        <div className={styles.flexCol}>
+          <CircularProgress className={styles.circularProgress}></CircularProgress>
+          <p className={styles.processingText}>
+            Processing...
+          </p>
+        </div>
+      </Modal>
     </div>
   )
 }

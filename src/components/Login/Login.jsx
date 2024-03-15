@@ -20,6 +20,7 @@ const Login = () => {
         email: "",
         password: ""
     })
+    console.log("hii");
 console.log(process.env.React_APP_BACKEND_URL);
     const loginHandler = async () => {
         const obj = {

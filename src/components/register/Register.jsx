@@ -10,9 +10,11 @@ import { MdLockOpen } from "react-icons/md";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Loader from "../../components/loader/Loader"
 
 const Register = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [isViewPassword, setIsViewPassword] = useState(false)
     const [isViewConfirmPassword, setIsViewConfirmPassword] = useState(false)
     const [signupData, setSignupData] = useState({
@@ -23,12 +25,7 @@ const Register = () => {
     })
 
     const signupHandler = async () => {
-        // console.log("d gfg");
-        // const obj = {
-        //     fullName: signupData.name,
-        //     email: signupData.email,
-        //     password: signupData.password
-        // }
+        setLoading(true)
         const formData = new FormData();
         formData.append('fullName', signupData.name);
         formData.append('email', signupData.email);
@@ -36,16 +33,17 @@ const Register = () => {
         formData.append('confirmPassword', signupData.confirmPassword);
         console.log("formData", formData);
         try {
-            const response = await axios.post('/api/v1/users/register', formData);
+            const response = await axios.post(`${process.env.React_APP_BACKEND_URL}/api/v1/users/register`, formData);
             console.log(response);
             toast.success("Registered successfully")
+            setLoading(false)
             navigate("/")
         } catch (error) {
-            const err = error.response.data.message
+            const err = error?.response?.data?.message
             // console.error(error);
+            setLoading(false)
             toast.error(`${err}`)
         }
-        // console.log("obj", obj);
     }
 
     return (
@@ -83,7 +81,13 @@ const Register = () => {
                             </div>
                             <div className='signbtn-container'>
                                 <button onClick={async () => await signupHandler()} className="subit-btn">
-                                    Register
+
+                                    {loading && (
+                                        <div className={`loaderContainer`}>
+                                            <Loader />
+                                        </div>
+                                    )}
+                                    {!loading && "Register"}
                                 </button>
                                 <p onClick={() => signupHandler()} className="have-an-account">
                                     Don't Have an account ?

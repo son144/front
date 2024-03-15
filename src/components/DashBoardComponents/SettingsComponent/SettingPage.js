@@ -7,10 +7,12 @@ import styles from "./SettingsPage.module.css"
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loader from '../../loader/Loader';
 
 const SettingPage = () => {
   const { auth } = useAuth()
   const token = localStorage.getItem('accessToken');
+  const [loading, setLoading] = useState(false);
 
   const [isOldView, setIsOldView] = useState(false)
   const [isNewView, setIsNewView] = useState(false)
@@ -27,23 +29,27 @@ const SettingPage = () => {
       newPassword: changedDetails.newPassword,
       user: auth.data
     }
+    setLoading(true)
     try {
-      // ${process.env.React_APP_BACKEND_URL}
       const response = await axios.post(`${process.env.React_APP_BACKEND_URL}/api/v1/users/change-password`, obj,
-      {
-        headers: {
+        {
+          headers: {
             Authorization: `Bearer ${token}`
+          }
         }
-    }
       );
-      // console.log(response);
+      console.log(response);
       toast.success("Details update successfully")
       setChangedDetails((prev) => ({ ...prev, name: "" }))
       setChangedDetails((prev) => ({ ...prev, oldPassWord: "" }))
       setChangedDetails((prev) => ({ ...prev, newPassword: "" }))
+      setLoading(false)
+
 
     } catch (error) {
-      const err = error.response.data.message
+      setLoading(false)
+
+      const err = error?.response?.data?.message
       toast.error(`${err}`)
       // console.error(error.response,"dfdsg");
     }
@@ -71,7 +77,13 @@ const SettingPage = () => {
           <div onClick={() => setIsNewView((prev) => !prev)}><MdOutlineRemoveRedEye className='icon' /></div>
         </div>
         <button onClick={async () => await changepasswordHandler()} className="subit-btn">
-          Update
+
+          {loading && (
+            <div className={styles.loaderContainer}>
+              <Loader />
+            </div>
+          )}
+          {!loading && "Update"}
         </button>
       </div>
 

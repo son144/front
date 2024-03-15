@@ -157,9 +157,10 @@ const EditModal = ({data,setIsEditModalOpen,editTaskHandler }) => {
                 {/* <div onClick={() => setShowCalendar(true)} className={styles.duebtn}>{dueDate}</div> */}
                 {/* : */}
                 {
-                  (selectedDate!=="Invalid date")&&
+                  (selectedDate!=="Invalid date")?
                 <button onClick={() => setShowCalendar(true)} className={styles.duebtn}>{selectedDate}</button>
-
+:
+<div></div>
                 }
 
             {/* } */}

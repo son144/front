@@ -10,6 +10,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { FaDiceD6 } from "react-icons/fa";
 import Cookies from 'js-cookie'
+import box from "../../../images/codesandbox.svg"
 
 
 const Sidebar = () => {
@@ -46,7 +47,9 @@ const Sidebar = () => {
         <NavLink to={"/#"}>
           <h3
             className={styles.proClass}>
-            <div><FaDiceD6 className={styles.text} /></div>
+            <div><img src={box}/> </div>
+
+            {/* <div><FaDiceD6 className={styles.text} /></div> */}
             Pro Manage</h3>
         </NavLink>
         <NavLink to={"/dashboard"}>

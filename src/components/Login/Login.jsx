@@ -12,50 +12,46 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
+import Loader from "../../components/loader/Loader"
 
 const Login = () => {
     const navigate = useNavigate();
     const [isView, setIsView] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [loginData, setLoginData] = useState({
         email: "",
         password: ""
     })
-    console.log("hii");
-console.log(process.env.React_APP_BACKEND_URL);
+    // console.log("hii");
+    // console.log(process.env.React_APP_BACKEND_URL);
+
     const loginHandler = async () => {
         const obj = {
             email: loginData.email,
             password: loginData.password
         }
+        setLoading(true)
         try {
-            // console.log("inside try");
-
             const response = await axios.post(`${process.env.React_APP_BACKEND_URL}/api/v1/users/login`, obj);
-            
-            // const response = await axios.post(`/api/v1/users/login`, obj);
-            const userId=response?.data?.data?.user?._id
-            const accessToken=response?.data?.data?.accessToken
-            const refreshToken=response?.data?.data?.refreshToken
-            console.log(response, "res");
-            // console.log(response.cookies, "cookies");
+            const userId = response?.data?.data?.user?._id
+            const accessToken = response?.data?.data?.accessToken
+            const refreshToken = response?.data?.data?.refreshToken
+            // console.log(response, "res");
             Cookies.set('name', 'value')
             Cookies.set("accessToken", accessToken)
             Cookies.set("refreshToken", refreshToken)
             navigate("/dashboard")
             localStorage.setItem("@auth", userId);
             localStorage.setItem("accessToken", accessToken);
-            
+            setLoading(false)
             toast.success("Logged in successfully.")
-            // }
         } catch (error) {
             console.error(error, "error");
-            console.error(error.response.data.message, "error.response.data");
-
+            console.error(error?.response?.data?.message, "error.response.data");
+            setLoading(false)
             const err = error?.response?.data?.message
             toast.error(`${err}`)
         }
-        // console.log("obj", obj);
-
     }
     return (
         <div className={styles.parentContainer}>
@@ -71,7 +67,7 @@ console.log(process.env.React_APP_BACKEND_URL);
 
                                 <div className={styles.inputConainer}>
                                     <div><MdOutlineMailOutline className={styles.icon} /></div>
-                                    <input type="text" placeholder='Email' className={styles.input} value={loginData.email} onChange={(e) => setLoginData((prev) => ({ ...prev, email: e.target.value }))} />
+                                    <input type="text" placeholder='Email'  className={styles.input} value={loginData.email} onChange={(e) => setLoginData((prev) => ({ ...prev, email: e.target.value }))} />
                                 </div>
                                 <div className={styles.inputConainer}>
                                     <div><MdLockOpen className={styles.icon} /></div>
@@ -80,9 +76,13 @@ console.log(process.env.React_APP_BACKEND_URL);
                                 </div>
                             </div>
                             <div className={styles.signbtnContainer}>
-                                <button onClick={() => loginHandler()}
-                                    className={styles.subitBtn}>
-                                    Log In
+                                <button onClick={() => loginHandler()} className={styles.subitBtn}>
+                                    {loading && (
+                                        <div className={styles.loaderContainer}>
+                                            <Loader />
+                                        </div>
+                                    )}
+                                    {!loading && "Log In"}
                                 </button>
                                 <p className={styles.haveAnAccount}>
                                     Have an account ?

@@ -8,6 +8,7 @@ import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import dayjs from 'dayjs'; 
 import styles from "./AddQuestionModal.module.css"
+import Loader from '../loader/Loader';
 
 const YourComponent = ({ setAddCard,onSaveHandler }) => {
   const { auth } = useAuth();
@@ -19,6 +20,8 @@ const YourComponent = ({ setAddCard,onSaveHandler }) => {
   const [tasks, setTasks] = useState([])
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   // const [checkList, setCheckList] = useState(0)
   
   const handleDateSelect = (date) => {
@@ -54,6 +57,7 @@ const YourComponent = ({ setAddCard,onSaveHandler }) => {
   };
 
   const onSave=async()=>{
+    setLoading(true)
     const obj = {
       title: title,
       priority: priority,
@@ -62,7 +66,15 @@ const YourComponent = ({ setAddCard,onSaveHandler }) => {
       complete: isCompleted,
       user: auth.data
     }
-   await onSaveHandler(obj)
+ try {
+  await onSaveHandler(obj)
+  setLoading(false)
+
+ } catch (error) {
+  setLoading(false)
+
+  
+ }
   }
 
   return (
@@ -135,7 +147,14 @@ const YourComponent = ({ setAddCard,onSaveHandler }) => {
             <div className={styles.btn}>
               <button onClick={() => { setAddCard(false) }}
                 className={styles.customBtn}>Cancel</button>
-              <button onClick={async () => await onSave()} className={styles.saveBtn}>Save</button>
+              <button onClick={async () => await onSave()} className={styles.saveBtn}>
+                {loading && (
+            <div className={styles.loaderContainer}>
+              <Loader />
+            </div>
+          )}
+          {!loading && "Save"}
+                </button>
 
             </div>
           </div>

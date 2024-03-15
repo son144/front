@@ -162,10 +162,10 @@
     color: #fff;
   }
 .btn{
-  border: 1px solid red;
+  /* border: 1px solid red; */
     display: flex;
     align-items: center;
-    justify-content: end;
+    /* justify-content: end; */
     gap: 0.75rem; 
   }
   .fixedCenter {

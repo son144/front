@@ -1,8 +1,24 @@
 import React from 'react';
 import styles from './DeleteTaskModal.module.css';
+import { useState } from 'react';
+import Loader from '../loader/Loader';
 
 const DeleteTaskModal = ({ setIsDelete, newData, deleteTask }) => {
-    // console.log("newData", newData);
+  const [loading, setLoading] = useState(false);
+
+  const onDeleteHanler=async(id)=>{
+    setLoading(true)
+    try {
+
+        await deleteTask(id);
+        setIsDelete(false);
+    setLoading(false)
+
+    } catch (error) {
+    setLoading(false)
+        
+    }
+  }  // console.log("newData", newData);
     return (
         <div className={styles.modalBackground}>
             <div className={styles.modalContent}>
@@ -12,12 +28,19 @@ const DeleteTaskModal = ({ setIsDelete, newData, deleteTask }) => {
                 <div className={styles.buttonContainer}>
                     <button
                         onClick={async () => {
-                            await deleteTask(newData?._id);
-                            setIsDelete(false);
+                            await onDeleteHanler(newData?._id)
+                            // await deleteTask(newData?._id);
+                            // setIsDelete(false);
                         }}
                         className={styles.yesButton}
                     >
-                        Yes, Delete
+                       
+                        {loading && (
+            <div className={styles.loaderContainer}>
+              <Loader />
+            </div>
+          )}
+          {!loading && " Yes, Delete"}
                     </button>
                     <button
                         onClick={() => { setIsDelete(false) }}

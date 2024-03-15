@@ -36,8 +36,26 @@
     align-items: center;
     gap: 1.25rem;
   }
+  .loaderContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
-  .yesButton,
+  .yesButton{
+    position: relative;
+    width: 100%;
+    padding:0 0.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
   .cancelButton {
     width: 100%;
     padding: 0.5rem;

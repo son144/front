@@ -25,6 +25,7 @@ const Card = ({ data, deleteTask, status, updateTodoData, editTodoData }) => {
   const checklistText = `Checklist (${completedSubtasks}/${totalSubtasks})`;
   const url = process.env.REACT_APP_API_URL
   const token = localStorage.getItem('accessToken');
+  console.log(url);
 
   console.log("formattedDate",formattedDate);
  
